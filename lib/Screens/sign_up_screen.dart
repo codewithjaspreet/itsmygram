@@ -1,8 +1,14 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:itsmygram/Widgets/text_feild_input.dart';
+import 'package:itsmygram/resources/auth_methods.dart';
 import 'package:itsmygram/utils/colors.dart';
+
+import '../utils/utils.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -14,7 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-
+  Uint8List? image;
   @override
   void dispose() {
     super.dispose();
@@ -22,6 +28,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      image = im;
+    });
   }
 
   @override
@@ -52,16 +65,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
             //circular widget to accept and show selected image
             Stack(
               children: [
-                const CircleAvatar(
-                  radius: 64,
-                  backgroundImage: NetworkImage(
-                      'https://avatars.githubusercontent.com/u/85099922?v=4'),
-                ),
+                image != null
+                    ? CircleAvatar(
+                        backgroundImage: MemoryImage(image!),
+                        radius: 64,
+                      )
+                    : const CircleAvatar(
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                          'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg',
+                        ),
+                      ),
                 Positioned(
                     bottom: -10,
                     left: 80,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        selectImage();
+                      },
                       icon: const Icon(
                         Icons.add_a_photo,
                       ),
@@ -106,17 +127,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(
               height: 24,
             ),
-            Container(
-              child: const Text(
-                'Log In',
-              ),
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: const ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                color: blueColor,
+            InkWell(
+              onTap: () async {
+                String res = await AuthMethods().signUpuser(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  username: _usernameController.text,
+                  bio: _bioController.text,
+                  file: image!,
+                );
+                print(res);
+              },
+              child: Container(
+                child: const Text(
+                  'Sign up',
+                ),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  color: blueColor,
+                ),
               ),
             ),
             const SizedBox(
