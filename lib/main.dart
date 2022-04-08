@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:itsmygram/Screens/login_screen.dart';
+import 'package:itsmygram/Screens/sign_up_screen.dart';
 import 'package:itsmygram/responsive/responsive_layout_screen.dart';
 import 'package:itsmygram/utils/colors.dart';
 import 'package:itsmygram/responsive/mobile_screen_layout.dart';
@@ -18,6 +19,8 @@ void main() async {
       projectId: "its-mygram",
       storageBucket: "its-mygram.appspot.com",
     ));
+  } else {
+    await Firebase.initializeApp();
   }
   runApp(MyApp());
 }
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
       title: 'ItsMyGram',
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: LoginScreen(),
+      home: SignUpScreen(),
       // home: const ResponsiveLayout(
       //     mobileScreenLayout: MobileScreenLayout(),
       //     webScreenLayout: WebScreenLayout()),
