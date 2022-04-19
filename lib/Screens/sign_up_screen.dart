@@ -73,9 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     : const CircleAvatar(
                         radius: 64,
                         backgroundImage: NetworkImage(
-                          'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg',
-                        ),
-                      ),
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7aEcqIyMMPwvveYtw1RX_vsji_cDwqLrfrA&usqp=CAU')),
                 Positioned(
                     bottom: -10,
                     left: 80,
@@ -90,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
             const SizedBox(
-              height: 64,
+              height: 24,
             ),
 
             // text feild for username
