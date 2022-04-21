@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? image;
+  bool isloading = false;
   @override
   void dispose() {
     super.dispose();
@@ -34,6 +35,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       image = im;
+    });
+  }
+
+  void SignUpUser() async {
+    setState(() {
+      isloading = true;
+    });
+    String res = await AuthMethods().signUpuser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: image!,
+    );
+    if (res != 'success') {
+      showSnackBar(res, context);
+    }
+    setState(() {
+      isloading = false;
     });
   }
 
@@ -126,20 +146,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: 24,
             ),
             InkWell(
-              onTap: () async {
-                String res = await AuthMethods().signUpuser(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  username: _usernameController.text,
-                  bio: _bioController.text,
-                  file: image!,
-                );
-                print(res);
-              },
+              onTap: SignUpUser,
               child: Container(
-                child: const Text(
-                  'Sign up',
-                ),
+                child: isloading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text(
+                        'Sign up',
+                      ),
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),
