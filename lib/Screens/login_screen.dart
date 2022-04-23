@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itsmygram/Widgets/text_feild_input.dart';
+import 'package:itsmygram/resources/auth_methods.dart';
 import 'package:itsmygram/utils/colors.dart';
+import 'package:itsmygram/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,12 +14,31 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  bool isLoading = false;
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void LoginUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
+
+    if (res == "success") {
+      //
+
+    } else {
+      // snackbar
+      showSnackBar(res, context);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -60,17 +81,25 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(
               height: 24,
             ),
-            Container(
-              child: const Text(
-                'Log In',
-              ),
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: const ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                color: blueColor,
+            InkWell(
+              onTap: LoginUser,
+              child: Container(
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        color: primaryColor,
+                      ))
+                    : const Text(
+                        'Log In',
+                      ),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  color: blueColor,
+                ),
               ),
             ),
             const SizedBox(
