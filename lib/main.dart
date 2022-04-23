@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       title: 'ItsMyGram',
       theme: ThemeData.dark()
           .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-      home: SignUpScreen(),
+      home: LoginScreen(),
       // home: const ResponsiveLayout(
       //     mobileScreenLayout: MobileScreenLayout(),
       //     webScreenLayout: WebScreenLayout()),
