@@ -150,7 +150,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Container(
                 child: isloading
                     ? Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
                       )
                     : const Text(
                         'Sign up',
