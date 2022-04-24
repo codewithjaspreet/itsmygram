@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:itsmygram/Screens/sign_up_screen.dart';
 import 'package:itsmygram/Widgets/text_feild_input.dart';
 import 'package:itsmygram/resources/auth_methods.dart';
 import 'package:itsmygram/utils/colors.dart';
 import 'package:itsmygram/utils/utils.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -22,6 +27,11 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
+  void navigateToSignup() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => SignUpScreen()));
+  }
+
   void LoginUser() async {
     setState(() {
       isLoading = true;
@@ -30,8 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
 
     if (res == "success") {
-      //
-
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+              webScreenLayout: WebScreenLayout(),
+              mobileScreenLayout: MobileScreenLayout())));
     } else {
       // snackbar
       showSnackBar(res, context);
@@ -113,7 +125,9 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    navigateToSignup();
+                  },
                   child: Container(
                     child: Text('Dont have an account ? '),
                     padding: EdgeInsets.symmetric(vertical: 8),
