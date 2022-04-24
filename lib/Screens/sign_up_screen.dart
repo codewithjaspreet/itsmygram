@@ -4,10 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:itsmygram/Screens/login_screen.dart';
 import 'package:itsmygram/Widgets/text_feild_input.dart';
 import 'package:itsmygram/resources/auth_methods.dart';
 import 'package:itsmygram/utils/colors.dart';
 
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/utils.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -31,6 +35,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _usernameController.dispose();
   }
 
+  void navigateToLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   void selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
@@ -51,6 +60,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
     if (res != 'success') {
       showSnackBar(res, context);
+    }
+    // const ResponsiveLayout(
+    //     mobileScreenLayout: MobileScreenLayout(),
+    //     webScreenLayout: WebScreenLayout());
+    //
+    else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+              webScreenLayout: WebScreenLayout(),
+              mobileScreenLayout: MobileScreenLayout())));
     }
     setState(() {
       isloading = false;
@@ -176,20 +195,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
+                Container(
+                  child: Text('Dont have an account ? '),
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: navigateToLogin,
                   child: Container(
-                    child: Text('Dont have an account ? '),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     padding: EdgeInsets.symmetric(vertical: 8),
                   ),
-                ),
-                Container(
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 8),
                 )
               ],
             ),
